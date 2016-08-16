@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>clock</title>
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="clock.js"></script>
+</head>
+<body>
+	<img src="bg.jpg" alt="" style="display:none;width:100px">
+	<div style="width:800px;height:600px; margin:30px auto;border:1px solid #000;" id="clock"></div>
+</body>
+<script>		
+	var options={
+		eleId:'clock',
+		border:{
+			type:"",
+			setCircle:{
+				radius:210,
+				lineWidth:6,
+				color:'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')'
+			},
+			setRectangle:{
+				width:420,
+				height:420,
+				lineWidth:6,
+				color:'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')'
+			}
+		},
+		needle:{
+			second:{
+				length:125,
+				color:'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')',
+				lineWidth:4
+			},
+			minute:{
+				length:140,
+				color:'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')',
+				lineWidth:5
+			},
+			hour:{
+				length:100,
+				color:'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')',
+				lineWidth:5
+			},
+		},
+		dial:{
+				isDial:true,//是否要刻度
+				distance:15, //刻度与边界的距离
+				maxLength:8,
+				minLength:5,
+				maxWidth:3,
+				minWidth:2,
+				color:'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')'
+			},
+		number:{
+			isNumber:true,
+			type:"",
+			fontSize:'20px',
+			radius:160,
+			fontWeight:'bold',
+			color:'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')'
+		}
+	}
+
+	$.clock(options)
+</script>
+</html>
