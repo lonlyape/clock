@@ -17,6 +17,12 @@ $.extend({
 					color:'#bbb'
 				}
 			},
+			//背景
+			background:{
+				isBackground:false,
+				color:"",
+				image:''
+			},
 			//针
 			needle:{
 				second:{
@@ -94,7 +100,7 @@ $.extend({
 			}
 			context.save();
 			context.translate(clockCanvas.width/2,clockCanvas.height/2);
-			context.beginPath();	
+			context.beginPath();
 			context.arc(0,0,option.border.setCircle.radius,0,Math.PI*2,true);
 			context.closePath();
 			context.strokeStyle=option.border.setCircle.color;
@@ -105,7 +111,7 @@ $.extend({
 		function rectangle(){
 			context.save();
 			context.translate(clockCanvas.width/2,clockCanvas.height/2);
-			context.beginPath();	
+			context.beginPath();
 			context.rect(-option.border.setRectangle.width/2,-option.border.setRectangle.height/2,option.border.setRectangle.width,option.border.setRectangle.height);
 			context.closePath();
 			context.strokeStyle=option.border.setRectangle.color;
@@ -114,27 +120,55 @@ $.extend({
 			context.restore();
 		}
 
-var image=new Image();
-image.width=option.border.type=='rectangle'?-option.border.setRectangle.width:option.border.setCircle.radius*2;
-				var pattern = context.createPattern(image, "no-repeat");
+
 		//背景图片
-		function bgImag(url){
-			
-			//image.onload=function(){
-				context.save();
-				context.translate(clockCanvas.width/2,clockCanvas.height/2);
-				context.beginPath();
-				if(option.border.type=='rectangle')	
-					context.rect(-option.border.setRectangle.width/2,-option.border.setRectangle.height/2,option.border.setRectangle.width,option.border.setRectangle.height);
-				else
-					context.arc(0,0,option.border.setCircle.radius,0,Math.PI*2,true);
-				context.closePath();
-				context.fillStyle=pattern;
+		function bgImag(){
+			if(!option.background.isBackground){
+				return;
+			}
+			context.save();
+			context.beginPath();
+			context.translate(clockCanvas.width/2,clockCanvas.height/2);
+
+			if(option.border.type=='rectangle')	{
+				context.rect(-option.border.setRectangle.width/2,-option.border.setRectangle.height/2,option.border.setRectangle.width,option.border.setRectangle.height);
+				var x=-option.border.setRectangle.width/2,
+					y=-option.border.setRectangle.height/2;
+			}else{
+				context.arc(0,0,option.border.setCircle.radius,0,Math.PI*2,true);
+				var x=-option.border.setCircle.radius,
+					y=-option.border.setCircle.radius;
+			}
+
+			if(option.background.color){
+				context.fillStyle=option.background.color;
 				context.fill();
-				context.restore();
-			//}
+			}
+			if(option.background.image){
+				var image=new Image();
+				image.src=option.background.image;
+				var pattern='';
+				image.onload=function(){
+					pattern = context.createPattern(image, "no-repeat");
+				}
+				var sx,sy,autow;
+				if(image.width>=image.height){
+					sx=(image.width-image.height)/2;
+					sy=0;
+					autow=image.height;
+				}else{
+					sx=0;
+					sy=(image.height-image.width)/2;
+					autow=image.width;
+				}
+				
+				context.clip();
+				context.drawImage(image,sx,sy,autow,autow,x,y,-x*2,-y*2);
+			}
+			
+			context.closePath();
+			context.restore();
 		}
-			image.src="bg.jpg";
 
 		//数字
 		function number(){
@@ -261,21 +295,18 @@ image.width=option.border.type=='rectangle'?-option.border.setRectangle.width:op
 		}
 
 
-		newData();
-		bgImag("bg.jpg");
-		rounds();
-		number();
-		needle(hAngle,mAngle,sAngle);
-		dial();
-
-		setInterval(function(){
-			context.clearRect(0,0,clockCanvas.width,clockCanvas.height);
+		function draw(){
 			newData();
-			bgImag("bg.jpg");
+			bgImag();
 			rounds();
 			number();
 			needle(hAngle,mAngle,sAngle);
 			dial();
+		}
+		draw();
+		setInterval(function(){
+			context.clearRect(0,0,clockCanvas.width,clockCanvas.height);
+			draw();
 		},1000)
 	}
 });

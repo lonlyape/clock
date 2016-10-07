@@ -27,14 +27,19 @@
 				color:'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')'
 			}
 		},
+		background:{
+			isBackground:true,
+			color:'#eee',
+			image:'8.jpg'
+		},
 		needle:{
 			second:{
-				length:125,
+				length:140,
 				color:'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')',
 				lineWidth:4
 			},
 			minute:{
-				length:140,
+				length:125,
 				color:'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')',
 				lineWidth:5
 			},
@@ -46,7 +51,7 @@
 		},
 		dial:{
 				isDial:true,//是否要刻度
-				distance:15, //刻度与边界的距离
+				distance:2, //刻度与边界的距离
 				maxLength:8,
 				minLength:5,
 				maxWidth:3,
@@ -57,7 +62,7 @@
 			isNumber:true,
 			type:"",
 			fontSize:'20px',
-			radius:160,
+			radius:180,
 			fontWeight:'bold',
 			color:'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')'
 		}
