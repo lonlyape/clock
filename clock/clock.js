@@ -147,23 +147,41 @@ $.extend({
 			if(option.background.image){
 				var image=new Image();
 				image.src=option.background.image;
-				var pattern='';
-				image.onload=function(){
-					pattern = context.createPattern(image, "no-repeat");
-				}
-				var sx,sy,autow;
-				if(image.width>=image.height){
-					sx=(image.width-image.height)/2;
-					sy=0;
-					autow=image.height;
+				var iw=image.width;
+				var ih=image.height;
+				var borderType=option.border.type;
+				var bw=(borderType=="circle")?option.border.setCircle.radius : option.border.setRectangle.width;
+				var bh=(borderType=="circle")?option.border.setCircle.radius : option.border.setRectangle.height;
+				
+				var sx,sy,autow,autoh;
+				if(iw>=ih){
+					if(bw>=bh && !(iw/ih>=bw/bh)){
+						autow=iw;
+						autoh=iw*(bh/bw)/2;
+						sx=0;
+						sy=(ih-autoh);
+					}else{
+						autow=ih*(bw/bh);
+						autoh=ih;
+						sx=(iw-autow)/2;
+						sy=0;
+					}
 				}else{
-					sx=0;
-					sy=(image.height-image.width)/2;
-					autow=image.width;
+					if(bw<=bh && !(ih/iw>=bh/bw)){
+						autow=ih*(bw/bh);
+						autoh=ih;
+						sx=(iw-autow)/2;
+						sy=0;
+					}else{
+						autow=iw;
+						autoh=iw*(bh/bw);
+						sx=0;
+						sy=(ih-autoh)/2;
+					}
 				}
 				
 				context.clip();
-				context.drawImage(image,sx,sy,autow,autow,x,y,-x*2,-y*2);
+				context.drawImage(image,sx,sy,autow,autoh,x,y,-x*2,-y*2);
 			}
 			
 			context.closePath();
