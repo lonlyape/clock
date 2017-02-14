@@ -54,7 +54,7 @@ $.extend({
 			//时钟的数字
 			number:{
 				isNumber:true,//是否要数字
-				type:"arabic",//数字类型
+				type:"arabic",//数字类型，罗马：“roman”；阿拉伯：“arabic”（默认）
 				color:"#777",
 				fontSize:"19px",
 				fontWeight:"normal",
@@ -69,6 +69,11 @@ $.extend({
 			}else{
 				option.border.setCircle.radius=option.border.setRectangle.height/2;
 			}
+		}
+
+		//过渡参数
+		var transitionOption={
+			bgImg:''
 		}
 		var sAngle, mAngle,hAngle;
 		var clockCanvas=document.createElement('canvas');
@@ -130,58 +135,47 @@ $.extend({
 			context.beginPath();
 			context.translate(clockCanvas.width/2,clockCanvas.height/2);
 
+			var x,y;
 			if(option.border.type=='rectangle')	{
 				context.rect(-option.border.setRectangle.width/2,-option.border.setRectangle.height/2,option.border.setRectangle.width,option.border.setRectangle.height);
-				var x=-option.border.setRectangle.width/2,
-					y=-option.border.setRectangle.height/2;
+				x=-option.border.setRectangle.width/2;
+				y=-option.border.setRectangle.height/2;
 			}else{
 				context.arc(0,0,option.border.setCircle.radius,0,Math.PI*2,true);
-				var x=-option.border.setCircle.radius,
-					y=-option.border.setCircle.radius;
+				x=-option.border.setCircle.radius;
+				y=-option.border.setCircle.radius;
 			}
 
-			if(option.background.color){
+			if(option.background.color && !option.background.image){
 				context.fillStyle=option.background.color;
 				context.fill();
 			}
 			if(option.background.image){
 				var image=new Image();
-				image.src=option.background.image;
-				var iw=image.width;
-				var ih=image.height;
-				var borderType=option.border.type;
-				var bw=(borderType=="circle")?option.border.setCircle.radius : option.border.setRectangle.width;
-				var bh=(borderType=="circle")?option.border.setCircle.radius : option.border.setRectangle.height;
-				
-				var sx,sy,autow,autoh;
-				if(iw>=ih){
-					if(bw>=bh && !(iw/ih>=bw/bh)){
-						autow=iw;
-						autoh=iw*(bh/bw)/2;
-						sx=0;
-						sy=(ih-autoh);
-					}else{
-						autow=ih*(bw/bh);
-						autoh=ih;
-						sx=(iw-autow)/2;
-						sy=0;
+
+				if(!transitionOption.bgImg){
+					image.src=option.background.image;
+					image.onload=function(){
+						transitionOption.bgImg=image;
 					}
+					
 				}else{
-					if(bw<=bh && !(ih/iw>=bh/bw)){
-						autow=ih*(bw/bh);
-						autoh=ih;
-						sx=(iw-autow)/2;
-						sy=0;
-					}else{
-						autow=iw;
-						autoh=iw*(bh/bw);
-						sx=0;
-						sy=(ih-autoh)/2;
-					}
+					image=transitionOption.bgImg;
+				}
+				
+				var sx,sy,autow;
+				if(image.width>=image.height){
+					sx=(image.width-image.height)/2;
+					sy=0;
+					autow=image.height;
+				}else{
+					sx=0;
+					sy=(image.height-image.width)/2;
+					autow=image.width;
 				}
 				
 				context.clip();
-				context.drawImage(image,sx,sy,autow,autoh,x,y,-x*2,-y*2);
+				context.drawImage(image,sx,sy,autow,autow,x,y,-x*2,-y*2);
 			}
 			
 			context.closePath();
@@ -275,9 +269,9 @@ $.extend({
 			context.save();
 			context.translate(clockCanvas.width/2,clockCanvas.height/2);
 			
-			line({x:0,y:15},h,option.needle.hour.length , option.needle.hour.color , option.needle.hour.lineWidth)		//时针
-			line({x:0,y:15},m,option.needle.minute.length , option.needle.minute.color , option.needle.minute.lineWidth)	//分针
-			line({x:0,y:15},s,option.needle.second.length , option.needle.second.color , option.needle.second.lineWidth) 	//秒针
+			line({x:0,y:15},h,option.needle.hour.length , option.needle.hour.color , option.needle.hour.lineWidth);		//时针
+			line({x:0,y:15},m,option.needle.minute.length , option.needle.minute.color , option.needle.minute.lineWidth);	//分针
+			line({x:0,y:15},s,option.needle.second.length , option.needle.second.color , option.needle.second.lineWidth);	//秒针
 			
 			context.restore();
 		}
