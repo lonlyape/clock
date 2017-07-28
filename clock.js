@@ -209,7 +209,7 @@ $.extend({
 			}
 			if(option.number.type=='roman'){
 				for(var i=0; i<12; i++){
-					num[i]=toRman(num[i]);
+					num[i]=intToRoman(num[i]);
 				}
 			}
 			var ar=Math.PI/6;
@@ -224,60 +224,29 @@ $.extend({
 			}
 			context.restore();
 		}
-		function toRman(arabic){
-	        var alpha=[ 'I', 'V', 'X', 'L', 'C', 'D', 'M' ];
-	        var roman="";
-	        var bit = 0;
-	        while (arabic > 0){  
-	            var tempnum = arabic % 10;
-	            switch (tempnum){  
-	                case 3:{   
-	                    roman=alpha[bit]+roman;  
-	                    tempnum--;
-	                }  
-	                case 2:{  
-	                    roman=alpha[bit]+roman;  
-	                    tempnum--;
-	                }  
-	                case 1:{  
-	                    roman=alpha[bit]+roman;  
-	                    break;  
-	                }  
-	                case 4:{  
-	                    roman=alpha[bit + 1]+roman;
-	                    roman=alpha[bit]+roman;  
-	                    break;  
-	                }  
-	                case 8:{  
-	                    roman=alpha[bit]+roman; 
-	                    tempnum--;
-	                }  
-	                case 7:{  
-	                    roman=alpha[bit]+roman; 
-	                    tempnum--;
-	                }  
-	                case 6:{  
-	                    roman=alpha[bit]+roman;  
-	                    tempnum--;
-	                }  
-	                case 5:{  
-	                    roman=alpha[bit + 1]+roman;  
-	                    break;  
-	                }  
-	                case 9:{ 
-	                    roman=alpha[bit + 2]+roman; 
-	                    roman=alpha[bit]+roman; 
-	                    break;  
-	                }  
-	                default:{  
-	                    break;  
-	                }  
-	            }  
-	            bit += 2;  
-	            arabic = Math.floor(arabic / 10);  
-	        }  
-	     return roman;
-	    }
+		function intToRoman(num) {
+			var roman = ['I', 'V', 'X', 'L', 'C', 'D', 'M'];
+			var numArr = num.toString().split('');
+			for (var i = 0; i < numArr.length; i++) {
+				var n = Number(numArr[numArr.length - 1 - i]);
+				numArr[numArr.length - 1 - i] = '';
+				if (n >= 5 && n < 9) {
+					numArr[numArr.length - 1 - i] = roman[2 * i + 1];
+					for (var j = 0; j < n - 5; j++) {
+						numArr[numArr.length - 1 - i] += roman[2 * i];
+					}
+				} else if (n == 9) {
+					numArr[numArr.length - 1 - i] = roman[2 * i] + roman[2 * i + 2];
+				} else if (n == 4) {
+					numArr[numArr.length - 1 - i] = roman[2 * i] + roman[2 * i + 1];
+				} else {
+					for (var j = 0; j < n; j++) {
+						numArr[numArr.length - 1 - i] += roman[2 * i];
+					}
+				}
+			}
+			return numArr.join('');
+		}
 
 		//针
 		function needle(h,m,s){
