@@ -96,15 +96,10 @@ $.extend({
 
 		//初始时间
 		function newData() {
-
-			var nd = new Date();
-			if (option.time.isTime) {
-				nd = new Date(option.time.timestamp);
-			}
+			var nd = option.time.isTime ? new Data(option.time.timestamp) : new Date()
 			var hour = nd.getHours();
 			var minute = nd.getMinutes();
 			var second = nd.getSeconds();
-
 			sAngle = Math.PI * 2 * (second % 60) / 60;
 			mAngle = Math.PI * 2 * (minute % 60) / 60 + sAngle / 60;
 			hAngle = Math.PI * 2 * (hour % 12) / 12 + mAngle / 12;
@@ -150,7 +145,6 @@ $.extend({
 			context.save();
 			context.beginPath();
 			context.translate(clockCanvas.width / 2, clockCanvas.height / 2);
-
 			var x, y;
 			if (option.border.type == 'rectangle') {
 				context.rect(-option.border.setRectangle.width / 2, -option.border.setRectangle.height / 2, option.border.setRectangle.width, option.border.setRectangle.height);
@@ -161,7 +155,6 @@ $.extend({
 				x = -option.border.setCircle.radius;
 				y = -option.border.setCircle.radius;
 			}
-
 			if (option.background.color && !option.background.image) {
 				context.fillStyle = option.background.color;
 				context.fill();
@@ -193,7 +186,6 @@ $.extend({
 				context.clip();
 				context.drawImage(image, sx, sy, autow, autow, x, y, -x * 2, -y * 2);
 			}
-
 			context.closePath();
 			context.restore();
 		}
@@ -319,7 +311,7 @@ $.extend({
 			setInterval(function() {
 				context.clearRect(0, 0, clockCanvas.width, clockCanvas.height);
 				draw();
-			}, 1000)
+			}, 1000);
 		}
 	}
 });
