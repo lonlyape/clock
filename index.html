@@ -8,10 +8,15 @@
 </head>
 <body>
 	<div style="width:800px;height:600px; margin:30px auto;border:1px solid #000;" id="clock"></div>
+	<div style="width:800px;height:600px; margin:30px auto;border:1px solid #000;" id="clock1"></div>
 </body>
-<script>		
+<script>
+	var option={
+		el:'#clock'
+	}
+	$.clock(option);	
 	var options={
-		el:'#clock',
+		el:'#clock1',
 		border:{
 			type:"rectangle",
 			setCircle:{
