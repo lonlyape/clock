@@ -12,7 +12,18 @@
 </body>
 <script>
 	var option={
-		el:'#clock'
+		el:'#clock',
+		needle:{
+			second:{
+				longOut:15
+			},
+			minute:{
+				longOut:15
+			},
+			hour:{
+				longOut:15
+			},
+		},
 	};
 	$.clock(option);	
 	var options={
@@ -40,7 +51,7 @@
 			second:{
 				length:140,
 				color:'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')',
-				lineWidth:4,
+				lineWidth:3,
 				longOut:15
 			},
 			minute:{
