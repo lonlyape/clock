@@ -7,6 +7,7 @@ $.extend({
 	clock: function(options) {
 		var option = {
 			el: '', //element的id   字符串
+			//是否为静态时间
 			time: {
 				isStatic: false,
 				timestamp: 0
@@ -97,7 +98,7 @@ $.extend({
 
 		//初始时间
 		function newData() {
-			var nd = option.time.isTime ? new Data(option.time.timestamp) : new Date()
+			var nd = option.time.isStatic ? new Data(option.time.timestamp) : new Date()
 			var hour = nd.getHours();
 			var minute = nd.getMinutes();
 			var second = nd.getSeconds();
@@ -308,7 +309,7 @@ $.extend({
 			dial();
 		}
 		draw();
-		if (!option.time.isTime) {
+		if (!option.time.isStatic) {
 			setInterval(function() {
 				context.clearRect(0, 0, clockCanvas.width, clockCanvas.height);
 				draw();
