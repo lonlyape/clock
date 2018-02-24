@@ -8,7 +8,7 @@ $.extend({
 		var option = {
 			el: '', //element的id   字符串
 			time: {
-				isoption: false,
+				isStatic: false,
 				timestamp: 0
 			},
 			//时钟的边界
